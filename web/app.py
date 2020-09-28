@@ -160,12 +160,17 @@ class Transfer(Resource):
 
         if not UserExist(to):
             return jsonify(generateReturnDictionary(301, "Recieved username is invalid"))
+            
+        if cash_to<money:
+            return jsonify(generateReturnDictionary(305, "Transfer money is greater than account balance"))
 
         cash_from = cashWithUser(username)
         cash_to   = cashWithUser(to)
         bank_cash = cashWithUser("BANK")
+      
 
         updateAccount("BANK", bank_cash+1)
+        
         updateAccount(to, cash_to+money-1)
         updateAccount(username, cash_from - money)
 
